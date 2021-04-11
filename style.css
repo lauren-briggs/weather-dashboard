@@ -46,6 +46,11 @@ button{
     grid-row: 1;
 }
 
+#dateIconBox{
+    display: flex;
+    justify-content: space-between;
+}
+
 #forecast{
     grid-column: 2;
 }
