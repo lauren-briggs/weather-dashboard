@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Weather Dashboard</title>
+</head>
+
+<body>
+
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+        <section class="grid-container">
+            <div id="searchCard">
+                <form class="grid-item">
+                    <label>
+                        <h3>Search for a city</h3>
+                    </label>
+                    <input type="text" id="searchInput" placeholder="Melbourne" autocomplete="off">
+                    <button type="submit" id="searchBtn">Search</button>
+                </form>
+                <div id="searchHistory">
+                    <h3>Search history</h3>
+                    <!-- <ul>
+                        <li>search history</li>
+                    </ul> -->
+                </div>
+            </div>
+            <div class="grid-item" id="resultsCard">
+                <div id="cityName">
+                    <h2>City Name</h2>
+                </div>
+                <div id="date"><strong>Date: </strong></div>
+                <div id="weatherConditions">Icon goes here</div>
+
+                <div id="temp"><strong>Temperature: </strong></div>
+                <div id="humidity"><strong>Humidity: </strong></div>
+                <div id="windSpeed"><strong>Wind Speed: </strong></div>
+                <div id="uvIndex"><strong>UV Index: </strong></div>
+            </div>
+            <div class="grid-item" id="forecast">
+                <h3>5 Day Forecast</h3>
+            </div>
+        </section>
+    </main>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
