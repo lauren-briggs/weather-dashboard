@@ -27,27 +27,35 @@
                 </form>
                 <div id="searchHistory">
                     <h3>Search history</h3>
-                    <!-- <ul>
-                        <li>search history</li>
-                    </ul> -->
+                    <div id="historyBtn"></div>
                 </div>
             </div>
             <div class="grid-item" id="resultsCard">
-                <div id="cityName">
-                    <h2>City Name</h2>
+                <div id="cityDateBlock">
+                    <div id="cityName">
+                        <h2>City Name</h2>
+                    </div>
+                    <div id="date"><strong>Date: </strong></div>
                 </div>
                 <div id="dateIconBox">
-                    <div id="date"><strong>Date: </strong></div>
                     <div id="weatherConditions">Icon goes here</div>
                 </div>
 
-                <div id="temp"><strong>Temperature: </strong></div>
-                <div id="humidity"><strong>Humidity: </strong></div>
-                <div id="windSpeed"><strong>Wind Speed: </strong></div>
-                <div id="uvIndex"><strong>UV Index: </strong></div>
+                <div id="tempLabel"><strong>Temperature: </strong><span id=temp></span></div>
+                <div id="humidityLabel"><strong>Humidity: </strong><span id=humidity></span></div>
+                <div id="windSpeedLabel"><strong>Wind Speed: </strong><span id=windSpeed></span></div>
+                <div id="uvIndexLabel"><strong>UV Index: </strong><span id=uvIndex></span></div>
+
+
             </div>
             <div class="grid-item" id="forecast">
                 <h3>5 Day Forecast</h3>
+                <div class="forecast-grid-container">
+                    <div id="forecast-grid-item"></div>
+                    <div id="forecast-grid-item"></div>
+                    <div id="forecast-grid-item"></div>
+                    <div id="forecast-grid-item"></div>
+                </div>
             </div>
         </section>
     </main>

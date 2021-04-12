@@ -17,7 +17,7 @@ var foreCastEl = document.getElementById('forecast');
 var apiKey = "5d5d1586256ab99773fad7bd1dad7135";
 var city = searchInput.value;
 
-var prevSearches = [];
+var prevSearches = JSON.parse(window.localStorage.getItem("City"));
 
 // get current date
 function getDate() {
@@ -36,22 +36,59 @@ function handleSearch(e) {
         alert("Please enter a city");
     } else {
         //save to local storage
-        var city = searchInput.value;
-        prevSearches.unshift(city);
-        window.localStorage.setItem("City", JSON.stringify(prevSearches));
-        console.log("You have saved your search of " + city + " to local storage");
-        console.log("Previous searches array: " + prevSearches)
-
-        getAPI();
-        getForecast();
+        city = searchInput.value;
+        if (!prevSearches.includes(city)) {
+            prevSearches.unshift(city);
+            window.localStorage.setItem("City", JSON.stringify(prevSearches));
+            console.log("You have saved your search of " + city + " to local storage");
+            console.log("Previous searches array: " + prevSearches)
+        }
+        getLatLon();
     }
 };
 
-// make API call
-function getAPI() {
-    var requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&APPID=" + apiKey;
+//render weather results to screen
+function renderWeather(data) {
+    // var searchedCity = searchInput.value;
+    cityNameEl.innerHTML = "<h2>" + searchInput.value + "</h2>";
+    cityNameEl.setAttribute("style", "text-transform: uppercase;")
+    console.log("The city you are searching is " + searchInput.value);
 
-    //fetch request
+    getDate();
+
+    console.log(data);
+
+    weatherCondEl.innerHTML = ""
+    var weatherIcon = document.createElement("img");
+    weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png");
+    weatherCondEl.appendChild(weatherIcon);
+
+    tempEl.innerHTML = data.current.temp;
+    humidityEl.innerHTML = data.current.humidity;
+    windSpeedEl.innerHTML = data.current.wind_speed;
+    uvIndexEl.innerHTML = data.current.uvi;
+};
+
+
+
+
+
+//forecast function for API call
+function getLatLon() {
+    var requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${apiKey}`
+
+    fetch(requestURL)
+        .then(function (response) {
+            response.json().then(function (data) {
+                getForecast(data);
+                console.log(data);
+            });
+        });
+}
+
+function getForecast(data) {
+    const requestURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&appid=${apiKey}`
+
     fetch(requestURL)
         .then(function (response) {
             if (response === 400) {
@@ -60,7 +97,8 @@ function getAPI() {
                 response.json()
                     .then(function (data) {
                         console.log(data);
-                        renderWeather(data, city);
+                        renderWeather(data);
+
                     })
             }
 
@@ -68,54 +106,29 @@ function getAPI() {
             console.log(error);
             return error;
         })
-};
-
-//render weather results to screen
-function renderWeather(weather) {
-
-    // var searchedCity = searchInput.value;
-    cityNameEl.innerHTML = "<h2>" + searchInput.value + "</h2>";
-    cityNameEl.setAttribute("style", "text-transform: uppercase;")
-    console.log("The city you are searching is " + searchInput.value);
-
-    getDate();
-
-    weatherCondEl.innerHTML = ""
-    var weatherIcon = weatherCondEl.createElement("img");
-    weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + weather.icon[0] + "@2x.png");
-
-    tempEl.append(weather.main.temp);
-    humidityEl.append(weather.main.humidity);
-    windSpeedEl.append(weather.wind.speed);
-    uvIndexEl.append()
-};
-
-
-//forecast function for API call
-function getForecast() {
-    var requestURL = "api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}"
-
-    fetch(requestURL)
-        .then(function (response) {
-            response.json().then(function (data) {
-                renderForecast(data);
-                console.log(data);
-            });
-        });
 
 }
-
 
 // funciton renderForecast(){
 
 // }
 
-
-
 searchBtn.addEventListener('click', handleSearch, renderHistory);
+
+
+function addHistoryButton(city) {
+    let historyBtn = document.getElementById("historyBtn");
+    let button = document.createElement("button");
+    button.textContent = city;
+    historyBtn.appendChild(button);
+}
+
 
 function renderHistory() {
     var prevSearchList = JSON.parse(localStorage.getItem("City"));
-    document.getElementById('searchHistory').innerHTML = prevSearchList;
-
+    prevSearches.map(function (e) {
+        addHistoryButton(e)
+    })
 }
+
+renderHistory();
