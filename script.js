@@ -12,7 +12,7 @@ var humidityEl = document.getElementById('humidity');
 var windSpeedEl = document.getElementById('windSpeed');
 var uvIndexEl = document.getElementById('uvIndex');
 
-var foreCastEl = document.getElementById('forecast');
+var forecastEl = document.getElementById('forecast');
 
 var apiKey = "5d5d1586256ab99773fad7bd1dad7135";
 var city = searchInput.value;
@@ -56,6 +56,7 @@ function renderWeather(data) {
 
     getDate();
 
+    console.log("api ONE call")
     console.log(data);
 
     weatherCondEl.innerHTML = ""
@@ -81,7 +82,9 @@ function getLatLon() {
         .then(function (response) {
             response.json().then(function (data) {
                 getForecast(data);
+                console.log("APi call to get Lat and Lon below")
                 console.log(data);
+                renderForecast(data);
             });
         });
 }
@@ -96,6 +99,7 @@ function getForecast(data) {
             } else {
                 response.json()
                     .then(function (data) {
+                        console.log("API One call below")
                         console.log(data);
                         renderWeather(data);
 
@@ -109,9 +113,42 @@ function getForecast(data) {
 
 }
 
-// funciton renderForecast(){
+function renderForecast(data) {
 
-// }
+    // let forecast = data.daily[i];
+
+    for (var i = 0; i <= 5; i++) {
+
+        // console.log(forecast);
+
+        let dailyObj = {
+            date: data.daily[i].dt,
+            icon: data.daily[i].weather.icon,
+            temp: data.daily[i].temp,
+            humidity: data.daily[i].humidity
+        }
+        console.log("daily object below");
+        console.log(dailyObj);
+
+        let dynamicForecastEl = document.createElement("div");
+
+        let dailyDate = document.createElement("h4");
+        dailyDate.textContent = moment.utc(date).format("dddd, Do MMMM");
+        dynamicForecastEl.appendChild(dailyDate);
+
+        let dailyIcon = document.createElement("img");
+        dailyIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + dailyObj.icon + "@2x.png");
+        dynamicForecastEl.appendChild(dailyIcon);
+
+        let dailyTemp = document.createElement("p");
+        dailyTemp.textContent = dailyObj.temp;
+        dynamicForecastEl.appendChild(dailyTemp);
+
+        let dailyHumidity = document.createElement("p");
+        dailyHumidity.textContent = dailyObj.humidity;
+        dynamicForecastEl.appendChild(dailyHumidity);
+    }
+};
 
 searchBtn.addEventListener('click', handleSearch, renderHistory);
 
