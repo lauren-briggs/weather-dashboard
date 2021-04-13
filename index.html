@@ -22,8 +22,10 @@
                     <label>
                         <h3>Search for a city</h3>
                     </label>
-                    <input type="text" id="searchInput" placeholder="Melbourne" autocomplete="off">
-                    <button type="submit" id="searchBtn">Search</button>
+                    <div id="inputSearchContainer">
+                        <input type="text" id="searchInput" placeholder="Melbourne" autocomplete="off">
+                        <button type="submit" id="searchBtn">Search</button>
+                    </div>
                 </form>
                 <div id="searchHistory">
                     <h3>Search history</h3>
@@ -35,10 +37,10 @@
                     <div id="cityName">
                         <h2>City Name</h2>
                     </div>
-                    <div id="date"><strong>Date: </strong></div>
+                    <div id="date"></div>
                 </div>
                 <div id="dateIconBox">
-                    <div id="weatherConditions">Icon goes here</div>
+                    <div id="weatherConditions"></div>
                 </div>
 
                 <div id="tempLabel"><strong>Temperature: </strong><span id=temp></span></div>
@@ -50,11 +52,7 @@
             </div>
             <div class="grid-item" id="forecast">
                 <h3>5 Day Forecast</h3>
-                <div class="forecast-grid-container">
-                    <div id="forecast-grid-item"></div>
-                    <div id="forecast-grid-item"></div>
-                    <div id="forecast-grid-item"></div>
-                    <div id="forecast-grid-item"></div>
+                <div id="forecast-grid-container">
                 </div>
             </div>
         </section>
