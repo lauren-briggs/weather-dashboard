@@ -167,8 +167,7 @@ function addHistoryButton(city) {
 
 
 function renderHistory() {
-    // prevSearches = []
-    // prevSearches = JSON.parse(window.localStorage.getItem("City"));
+    prevSearches = [];
     prevSearches.map(function (e) {
         addHistoryButton(e)
     })

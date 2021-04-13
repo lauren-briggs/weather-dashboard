@@ -28,10 +28,14 @@ WHEN I view the UV index
 THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
 WHEN I view future weather conditions for that city
 THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
--- The following is not yet functional --
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
 ```
+
+## Issues
+
+```
+I was able to get the search history to render to screen when working locally and already having saved the prevSearches to local storage - however there after clearing local storage or viewing on the live site there is an issue with this function that still needs fixing.
+```
+
 ## Final Site
 
 The following image shows the web application's appearance and functionality:
