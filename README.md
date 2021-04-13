@@ -33,7 +33,7 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 ## Issues
 
 ```
-I was able to get the search history to render to screen when working locally and already having saved the prevSearches to local storage - however there after clearing local storage or viewing on the live site there is an issue with this function that still needs fixing.
+Need to finalise search history rendering to screen - I was able to get the search history to render to screen when working locally and already having saved the prevSearches to local storage - however there after clearing local storage or viewing on the live site there is an issue with this function that still needs fixing.
 ```
 
 ## Final Site
