@@ -12,12 +12,20 @@ var humidityEl = document.getElementById('humidity');
 var windSpeedEl = document.getElementById('windSpeed');
 var uvIndexEl = document.getElementById('uvIndex');
 
+var forecastHeading = document.getElementById('forecast-heading');
 var forecastEl = document.getElementById('forecast-grid-container');
 
 var apiKey = "5d5d1586256ab99773fad7bd1dad7135";
-var city = searchInput.value;
+let city
+
+const citySetStorage = {
+    city: "Melbourne",
+}
+
+window.localStorage.setItem('City', JSON.stringify(citySetStorage));
 
 var prevSearches = JSON.parse(window.localStorage.getItem("City"));
+
 
 // search function
 function handleSearch(e) {
@@ -25,29 +33,34 @@ function handleSearch(e) {
     if (searchInput.value === "") {
         alert("Please enter a city");
     } else {
+        console.log(searchInput.value)
         //save to local storage
         city = searchInput.value.toUpperCase();
-        if (!prevSearches.includes(city)) {
-            prevSearches.unshift(city);
+        // console.log(prevSearches);
+        if (!prevSearches.hasOwnProperty(city)) {
             window.localStorage.setItem("City", JSON.stringify(prevSearches));
-            console.log(prevSearches)
+            // console.log(prevSearches)
         }
         getLatLon();
+        addHistoryButton(city);
     }
 };
 
 //render weather results to screen
 function renderWeather(data) {
     // var searchedCity = searchInput.value;
-    cityNameEl.innerHTML = "<h2>" + searchInput.value + "</h2>";
+    console.log(`RENDERED DATA AND NAME:`)
+    console.log(data)
+    console.log(`City var: ${city}`);
+    cityNameEl.innerHTML = "<h2>" + city + "</h2>";
     cityNameEl.setAttribute("style", "text-transform: uppercase;")
-    console.log("The city you are searching is " + searchInput.value);
+    console.log("Search input: " + searchInput.value);
 
     //using UNIX code from data to get current date
     var currentDay = moment.utc().format("dddd, Do MMMM");
     dateEl.textContent = "";
     dateEl.append(currentDay);
-    console.log("Today is " + currentDay);
+    // console.log("Today is " + currentDay);
 
     //getting weather icon
     weatherCondEl.innerHTML = ""
@@ -56,10 +69,10 @@ function renderWeather(data) {
     weatherCondEl.appendChild(weatherIcon);
 
     //temperature, humidity, wind speed and uv index
-    tempEl.innerHTML = data.current.temp + "&#8451;";
-    humidityEl.innerHTML = data.current.humidity + "%";
-    windSpeedEl.innerHTML = data.current.wind_speed;
-    uvIndexEl.innerHTML = data.current.uvi;
+    tempEl.innerHTML = `Temperature: ${data.current.temp}&#8451;`;
+    humidityEl.innerHTML = `Humidity: ${data.current.humidity}%`;
+    windSpeedEl.innerHTML = `Wind Speed: ${data.current.wind_speed}`;
+    uvIndexEl.innerHTML = `UV Index: ${data.current.uvi}`;
 
     //setting background colour of uv index depending on integer
     if (data.current.uvi > 5) {
@@ -70,19 +83,44 @@ function renderWeather(data) {
         uvIndexEl.setAttribute("style", "background-color: yellow;")
     };
 
+    city = ""
 };
+
+var nameOfCity
 
 //forecast function for API call
 function getLatLon() {
+    console.log(`city var in latLon: ${city}`);
     var requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${apiKey}`
-
     fetch(requestURL)
         .then(function (response) {
             response.json().then(function (data) {
                 getForecast(data);
                 console.log("DATA from APi call to get Lat and Lon below")
                 console.log(data);
+                nameOfCity = city;
+                console.log(`name of city var in latLon response: ${nameOfCity}`);
                 renderForecast(data);
+                renderWeather(data);
+            });
+        });
+}
+
+//forecast function for API call
+function getLatLonFromHistory(cityFromHistory) {
+    console.log(`city var in latLon HISTORY: ${city}`);
+    console.log(`cityFROM HISTORY var in latLon HISTORY: ${cityFromHistory}`);
+    var requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityFromHistory}&units=metric&APPID=${apiKey}`
+    fetch(requestURL)
+        .then(function (response) {
+            response.json().then(function (data) {
+                getForecast(data);
+                console.log("DATA from HISTORY")
+                console.log(data);
+                city = cityFromHistory;
+                console.log(`name of city var in latLon HISTORY response: ${city}`);
+                renderForecast(data);
+                renderWeather(data);
             });
         });
 }
@@ -112,21 +150,19 @@ function getForecast(data) {
 
 //HERE
 function renderForecast(data) {
-    console.log("data: ", data);
+    // console.log("DATA TO BE RENDERED: ", data);
     forecastEl.innerHTML = "";
+    forecastHeading.innerHTML = "5 Day Forecast";
 
     for (var i = 0; i <= 4; i++) {
-
-        // console.log(forecast);
-
         let dailyObj = {
             date: data.daily[i].dt,
             icon: data.daily[i].weather[0].icon,
             temp: data.daily[i].temp.day,
             humidity: data.daily[i].humidity
         }
-        console.log("daily object " + [i] + " below");
-        console.log(dailyObj);
+        // console.log("daily object " + [i] + " below");
+        // console.log(dailyObj);
 
         let dynamicForecastEl = document.createElement("div");
         dynamicForecastEl.innerHTML = ""
@@ -135,7 +171,7 @@ function renderForecast(data) {
         let myDate = moment.unix(dailyObj.date).format('dddd, MMMM Do')
 
         dailyDate.innerHTML = myDate;
-        console.log("myDate: ", myDate);
+        // console.log("myDate: ", myDate);
         dynamicForecastEl.appendChild(dailyDate);
 
 
@@ -158,33 +194,24 @@ function renderForecast(data) {
 
 searchBtn.addEventListener('click', handleSearch);
 
-// function addHistoryButton(city) {
-//     let historyBtn = document.getElementById("historyBtn");
-//     let button = document.createElement("button");
-//     button.textContent = city;
-//     historyBtn.appendChild(button);
-// }
+function addHistoryButton(city) {
+    let historyBtn = document.getElementById("historyBtn");
+    let button = document.createElement("button");
+    button.textContent = city;
+    historyBtn.appendChild(button);
+}
 
-
-// function renderHistory() {
-//     prevSearches = [];
-//     prevSearches.map(function (e) {
-//         addHistoryButton(e)
-//     })
-// }
-
-// renderHistory();
 
 
 // TO DO: create function to call search from click on history button
 // on click of history button
 
-// function handleSearchFromHistory(e, city) {
-//     e.preventDefault();
-//     console.log(e.target);
-//     city = e.target.textContent.toLowerCase();
-//     console.log(city);
-//     getLatLon();
-// }
+function handleSearchFromHistory(e, cityFromHistory) {
+    e.preventDefault();
+    // console.log(e.target);
+    cityFromHistory = e.target.textContent;
+    console.log(`RELOAD STARTED HERE ---- CITY FROM HISTORY: ${cityFromHistory}`);
+    getLatLonFromHistory(cityFromHistory);
+}
 
-// historyBtn.addEventListener("click", handleSearchFromHistory);
+historyBtn.addEventListener("click", handleSearchFromHistory);
