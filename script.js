@@ -156,25 +156,24 @@ function renderForecast(data) {
     }
 };
 
-searchBtn.addEventListener('click', handleSearch, renderHistory);
+searchBtn.addEventListener('click', handleSearch);
 
-function addHistoryButton(city) {
-    let historyBtn = document.getElementById("historyBtn");
-    let button = document.createElement("button");
-    button.textContent = city;
-    historyBtn.appendChild(button);
-}
-
-
-function renderHistory() {
-    prevSearches = [];
-    prevSearches.map(function (e) {
-        addHistoryButton(e)
-    })
-}
+// function addHistoryButton(city) {
+//     let historyBtn = document.getElementById("historyBtn");
+//     let button = document.createElement("button");
+//     button.textContent = city;
+//     historyBtn.appendChild(button);
+// }
 
 
-renderHistory();
+// function renderHistory() {
+//     prevSearches = [];
+//     prevSearches.map(function (e) {
+//         addHistoryButton(e)
+//     })
+// }
+
+// renderHistory();
 
 
 // TO DO: create function to call search from click on history button
