@@ -1,6 +1,7 @@
 @font-face {
     font-family: SuisseIntMonoReg;
     src: url(/weather-dashboard/assets/SuisseIntlMono-Regular-WebS.woff);
+    src: url(/assets/SuisseIntlMono-Regular-WebS.woff);
   }
   
 
@@ -29,13 +30,14 @@ h1{
 h2{
     text-transform: uppercase;
     font-size: 200%;
-    margin: 0px 0px 10px; 
+    margin: 0px; 
 }
 
 h3{
     text-transform: uppercase;
     font-size: 120%;
     margin: 0px; 
+    padding-bottom: 10px;
 }
 
 h4{
@@ -140,9 +142,8 @@ hr{
 
 .forecast-grid-item{
     color: white;
-    background-color: midnightblue;
-    padding: 0px 15px 10px 15px;
-    border-radius: 10px;
+    background-color: darkslategray;
+    padding: 15px;
 }
 
 p{
